@@ -20,7 +20,6 @@ public class FrameMenus extends javax.swing.JFrame {
     public FrameMenus() {
         initComponents();
         this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/firefox.png")));
-        
     }
 
     /**
