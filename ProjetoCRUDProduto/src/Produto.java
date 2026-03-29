@@ -8,11 +8,17 @@
  * @author igor
  */
 public class Produto {
+    
+    private static int contId = 1;
+    
+    private int id;
     private String descricao;
     private int qtd;
     private double preco;
     
     public Produto (){
+        this.id = contId;
+        contId++;
     }
 
     public String getDescricao() {
@@ -37,6 +43,10 @@ public class Produto {
 
     public void setPreco(double preco) {
         this.preco = preco;
+    }
+    
+    public int getId() {
+        return id;
     }
     
 }

@@ -1,18 +1,21 @@
 
 import java.awt.Toolkit;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-
 /**
  *
  * @author igor
  */
 public class FrameProdutos extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FrameProdutos.class.getName());
+
+    private DefaultTableModel modeloTabelaProdutos;
 
     /**
      * Creates new form FrameProdutos
@@ -20,6 +23,9 @@ public class FrameProdutos extends javax.swing.JFrame {
     public FrameProdutos() {
         initComponents();
         this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/icon_bottle.png")));
+
+        modeloTabelaProdutos = (DefaultTableModel) jTableProdutos.getModel();
+       
     }
 
     /**
@@ -35,9 +41,7 @@ public class FrameProdutos extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jTextFieldDescricao = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        jTextFieldQuantidade = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jTextFieldPreco = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jTextFieldBuscar = new javax.swing.JTextField();
@@ -47,7 +51,9 @@ public class FrameProdutos extends javax.swing.JFrame {
         jButtonExcluir = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jTableProdutos = new javax.swing.JTable();
+        jFormattedTextFieldPreco = new javax.swing.JFormattedTextField();
+        jFormattedTextFieldQuantidade = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Visualização de produtos");
@@ -68,15 +74,9 @@ public class FrameProdutos extends javax.swing.JFrame {
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel2.setText("Quantidade:");
 
-        jTextFieldQuantidade.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jTextFieldQuantidade.addActionListener(this::jTextFieldQuantidadeActionPerformed);
-
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel3.setText("Preço:");
-
-        jTextFieldPreco.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jTextFieldPreco.addActionListener(this::jTextFieldPrecoActionPerformed);
 
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/shelves.png"))); // NOI18N
@@ -112,8 +112,9 @@ public class FrameProdutos extends javax.swing.JFrame {
         jButtonExcluir.setMaximumSize(new java.awt.Dimension(111, 31));
         jButtonExcluir.setMinimumSize(new java.awt.Dimension(111, 31));
         jButtonExcluir.setPreferredSize(new java.awt.Dimension(111, 31));
+        jButtonExcluir.addActionListener(this::jButtonExcluirActionPerformed);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jTableProdutos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -129,7 +130,15 @@ public class FrameProdutos extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(jTableProdutos);
+
+        jFormattedTextFieldPreco.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter()));
+        jFormattedTextFieldPreco.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jFormattedTextFieldPreco.addActionListener(this::jFormattedTextFieldPrecoActionPerformed);
+
+        jFormattedTextFieldQuantidade.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#"))));
+        jFormattedTextFieldQuantidade.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jFormattedTextFieldQuantidade.addActionListener(this::jFormattedTextFieldQuantidadeActionPerformed);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -139,25 +148,6 @@ public class FrameProdutos extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(87, 87, 87)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jTextFieldQuantidade, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jTextFieldPreco)))
-                            .addComponent(jTextFieldDescricao)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel1)
-                                    .addComponent(jLabel5))
-                                .addGap(0, 0, Short.MAX_VALUE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jTextFieldBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -169,7 +159,25 @@ public class FrameProdutos extends javax.swing.JFrame {
                         .addComponent(jButtonAtualizar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButtonExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(110, 110, 110))))
+                        .addGap(110, 110, 110))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel1)
+                                    .addComponent(jLabel5))
+                                .addGap(193, 193, 193)
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jTextFieldDescricao)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jFormattedTextFieldQuantidade)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jFormattedTextFieldPreco)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
             .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(89, Short.MAX_VALUE)
@@ -192,13 +200,16 @@ public class FrameProdutos extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextFieldQuantidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jFormattedTextFieldQuantidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jFormattedTextFieldPreco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(10, 10, 10))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextFieldPreco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGap(50, 50, 50))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -213,7 +224,7 @@ public class FrameProdutos extends javax.swing.JFrame {
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(36, Short.MAX_VALUE))
+                .addContainerGap(28, Short.MAX_VALUE))
         );
 
         pack();
@@ -224,21 +235,49 @@ public class FrameProdutos extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldDescricaoActionPerformed
 
-    private void jTextFieldQuantidadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldQuantidadeActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldQuantidadeActionPerformed
-
-    private void jTextFieldPrecoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldPrecoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldPrecoActionPerformed
-
     private void jTextFieldBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldBuscarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldBuscarActionPerformed
 
     private void jButtonAdicioanarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAdicioanarActionPerformed
-        // TODO add your handling code here:
+
+        if (!jTextFieldDescricao.getText().isEmpty() && jFormattedTextFieldQuantidade.getValue() != null && jFormattedTextFieldPreco.getValue() != null) {
+            Produto produto = new Produto();
+            produto.setDescricao(jTextFieldDescricao.getText());
+            produto.setQtd(((Number) jFormattedTextFieldQuantidade.getValue()).intValue());
+            produto.setPreco(((Number) jFormattedTextFieldPreco.getValue()).doubleValue());
+            
+            
+            Object dadosProdutos[] = {produto.getId(), produto.getDescricao(), produto.getQtd(), produto.getPreco()};
+            modeloTabelaProdutos.addRow(dadosProdutos);
+            jTableProdutos.setModel(modeloTabelaProdutos);
+            jTextFieldBuscar.setText("");
+            jTextFieldDescricao.setText("");
+            jFormattedTextFieldPreco.setText("");
+            jFormattedTextFieldQuantidade.setText("");
+            
+            
+        }else{
+            JOptionPane.showMessageDialog(this, "Preencha todos os dados antes de inserir!", "Atenção", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_jButtonAdicioanarActionPerformed
+
+    private void jFormattedTextFieldQuantidadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFormattedTextFieldQuantidadeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jFormattedTextFieldQuantidadeActionPerformed
+
+    private void jFormattedTextFieldPrecoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFormattedTextFieldPrecoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jFormattedTextFieldPrecoActionPerformed
+
+    private void jButtonExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExcluirActionPerformed
+        if(jTableProdutos.getSelectedRow() >= 0){
+            modeloTabelaProdutos.removeRow(jTableProdutos.getSelectedRow());
+            jTableProdutos.setModel(modeloTabelaProdutos);
+        }else{
+            JOptionPane.showMessageDialog(this,"Selecione um item para remover!","Informação", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_jButtonExcluirActionPerformed
 
     /**
      * @param args the command line arguments
@@ -265,6 +304,8 @@ public class FrameProdutos extends javax.swing.JFrame {
     private javax.swing.JButton jButtonAtualizar;
     private javax.swing.JButton jButtonExcluir;
     private javax.swing.JButton jButtonPesquisar;
+    private javax.swing.JFormattedTextField jFormattedTextFieldPreco;
+    private javax.swing.JFormattedTextField jFormattedTextFieldQuantidade;
     private javax.swing.JLabel jLabel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -273,10 +314,8 @@ public class FrameProdutos extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTableProdutos;
     private javax.swing.JTextField jTextFieldBuscar;
     private javax.swing.JTextField jTextFieldDescricao;
-    private javax.swing.JTextField jTextFieldPreco;
-    private javax.swing.JTextField jTextFieldQuantidade;
     // End of variables declaration//GEN-END:variables
 }
