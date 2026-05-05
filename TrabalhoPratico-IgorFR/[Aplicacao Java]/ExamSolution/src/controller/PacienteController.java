@@ -58,4 +58,9 @@ public class PacienteController {
         return pacienteDao.read();
     }
 
+    public ArrayList<Paciente> getListaMedicosporNome(String nome) {
+        PacienteDao pacienteDao = new PacienteDao();
+        return pacienteDao.getListaPacienteporNome(nome);
+    }
+
 }

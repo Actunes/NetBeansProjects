@@ -57,5 +57,10 @@ public class MedicoController {
 
         return medicoDao.read();
     }
-
+    
+    public ArrayList<Medico> getListaMedicosporNome(String nome){
+        MedicoDao medicoDao = new MedicoDao();
+        return medicoDao.getListaMedicoporNome(nome);
+    }
+    
 }

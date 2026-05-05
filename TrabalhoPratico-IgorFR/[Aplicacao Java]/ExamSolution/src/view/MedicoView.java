@@ -85,6 +85,9 @@ public class MedicoView extends javax.swing.JFrame {
         jTableMedico = new javax.swing.JTable();
         jTextFieldCrm = new javax.swing.JTextField();
         jSeparator1 = new javax.swing.JSeparator();
+        jLabelPesquisarNome = new javax.swing.JLabel();
+        jTextFieldPesquisarNome = new javax.swing.JTextField();
+        jButtonPesquisar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Cadastro de Médicos - ExamSolution");
@@ -195,6 +198,13 @@ public class MedicoView extends javax.swing.JFrame {
 
         jTextFieldCrm.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
+        jLabelPesquisarNome.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabelPesquisarNome.setText("Pesquisar nome:");
+
+        jButtonPesquisar.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jButtonPesquisar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/search.png"))); // NOI18N
+        jButtonPesquisar.addActionListener(this::jButtonPesquisarActionPerformed);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -243,13 +253,23 @@ public class MedicoView extends javax.swing.JFrame {
                         .addComponent(jButtonExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))))
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jSeparator1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jSeparator1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jLabelPesquisarNome)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTextFieldPesquisarNome, javax.swing.GroupLayout.PREFERRED_SIZE, 422, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButtonPesquisar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -291,8 +311,16 @@ public class MedicoView extends javax.swing.JFrame {
                 .addGap(4, 4, 4)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(4, 4, 4)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(60, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(7, 7, 7)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabelPesquisarNome)
+                            .addComponent(jTextFieldPesquisarNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jButtonPesquisar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -307,7 +335,7 @@ public class MedicoView extends javax.swing.JFrame {
 
         String cpf = jFormattedTextFieldCpf.getText().replace(".", "").replace("-", "").replace(" ", "");
         String telefone = jFormattedTextFieldTelefone.getText().replace("(", "").replace(")", "").replace("-", "").replace(" ", "");
-        
+
         if (jTextFieldNome.getText().equals("") || jTextFieldEndereco.getText().equals("") || jTextFieldEspecialidade.getText().equals("") || cpf.equals("") || telefone.equals("") || jTextFieldCrm.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "Por favor, preencha todos os campos.", "Atenção", JOptionPane.WARNING_MESSAGE);
         } else {
@@ -380,6 +408,23 @@ public class MedicoView extends javax.swing.JFrame {
         this.getListaMedico();
     }//GEN-LAST:event_formWindowOpened
 
+    private void jButtonPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPesquisarActionPerformed
+        modeloTabelaMedico = (DefaultTableModel) jTableMedico.getModel();
+        modeloTabelaMedico.setNumRows(0);
+
+        for (Medico m : medicoController.getListaMedicosporNome(jTextFieldPesquisarNome.getText())) {
+            modeloTabelaMedico.addRow(new Object[]{
+                m.getId_medico(),
+                m.getNome(),
+                m.getCpf(),
+                m.getEndereco(),
+                m.getTelefone(),
+                m.getCrm(),
+                m.getEspecialidade()
+            });
+        }
+    }//GEN-LAST:event_jButtonPesquisarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -404,6 +449,7 @@ public class MedicoView extends javax.swing.JFrame {
     private javax.swing.JButton jButtonAdicionar;
     private javax.swing.JButton jButtonAtualizar;
     private javax.swing.JButton jButtonExcluir;
+    private javax.swing.JButton jButtonPesquisar;
     private javax.swing.JFormattedTextField jFormattedTextFieldCpf;
     private javax.swing.JFormattedTextField jFormattedTextFieldTelefone;
     private javax.swing.JLabel jLabelCpf;
@@ -411,6 +457,7 @@ public class MedicoView extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelEndereco;
     private javax.swing.JLabel jLabelEspecialidade;
     private javax.swing.JLabel jLabelNome;
+    private javax.swing.JLabel jLabelPesquisarNome;
     private javax.swing.JLabel jLabelTelefone;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
@@ -419,5 +466,6 @@ public class MedicoView extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldEndereco;
     private javax.swing.JTextField jTextFieldEspecialidade;
     private javax.swing.JTextField jTextFieldNome;
+    private javax.swing.JTextField jTextFieldPesquisarNome;
     // End of variables declaration//GEN-END:variables
 }

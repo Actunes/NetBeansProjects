@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.sql.ResultSet;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -104,6 +105,37 @@ public class PacienteDao {
         } finally {
             ConnectionFactory.closeConnection(con, stmt);
         }
+        return listaPacientes;
+    }
+
+    public ArrayList<Paciente> getListaPacienteporNome(String nome) {
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        ArrayList<Paciente> listaPacientes = new ArrayList<>();
+
+        try {
+            stmt = con.prepareStatement("SELECT * FROM paciente WHERE nome ILIKE ? ORDER by id_paciente");
+
+            stmt.setString(1, "%" + nome + "%");
+            rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Paciente paciente = new Paciente();
+                paciente.setId_paciente(rs.getInt("id_paciente"));
+                paciente.setNome(rs.getString("nome"));
+                paciente.setCpf(rs.getString("cpf"));
+                paciente.setEndereco(rs.getString("endereco"));
+                paciente.setTelefone(rs.getString("telefone"));
+                paciente.setDatanascimento(rs.getString("datanascimento"));
+                paciente.setPlanosaude(rs.getString("planosaude"));
+                listaPacientes.add(paciente);
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao ler os médicos", "Erro", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            ConnectionFactory.closeConnection(con, stmt, rs);
+        }
+
         return listaPacientes;
     }
 
